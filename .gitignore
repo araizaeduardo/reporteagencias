@@ -42,6 +42,12 @@ logs/
 
 # Archivos de uploads
 app/static/uploads/
+app/static/uploads/airlines/
+app/static/uploads/contracts/
+app/static/uploads/uploads/
+app/static/uploads/uploads/airlines/
+app/static/uploads/uploads/contracts/
+app/static/uploads/documents/
 
 # Archivos temporales
 .DS_Store
