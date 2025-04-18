@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Bienvenido - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="my-4"><i class="fas fa-plane-departure me-2"></i>Sistema de Agencias de Viajes</h1>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Bienvenido a nuestro sistema de gestión para agencias de viajes.</p>
+                    <p>Esta plataforma le permite a las agencias de viajes buscar contratos de aerolíneas, gestionar ventas y generar reportes.</p>
+                    
+                    <div class="mt-5">
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
+                        </a>
+                    </div>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-contract fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Contratos</h5>
+                                    <p class="card-text">Acceda a los contratos de las aerolíneas de manera fácil y rápida.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-cash-register fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Ventas</h5>
+                                    <p class="card-text">Registre sus ventas y mantenga un control de sus operaciones.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Reportes</h5>
+                                    <p class="card-text">Genere reportes detallados de sus ventas y rendimiento.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

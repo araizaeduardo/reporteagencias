@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Administración de Aerolíneas - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-plane me-2"></i>Administración de Aerolíneas
+                </h1>
+                {% if current_user.is_admin() %}
+                <a href="{{ url_for('airlines.new_airline') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i>Nueva Aerolínea
+                </a>
+                {% endif %}
+            </div>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" id="table-filter" data-table="#airlinesTable" placeholder="Buscar aerolínea...">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="airlinesTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Logo</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Contratos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for airline in airlines %}
+                                <tr>
+                                    <td>
+                                        {% if airline.logo_path %}
+                                            <img src="{{ url_for('static', filename=airline.logo_path) }}" alt="{{ airline.name }}" class="airline-logo">
+                                        {% else %}
+                                            <i class="fas fa-plane fa-2x text-secondary"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ airline.code }}</strong></td>
+                                    <td>{{ airline.name }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ airline.contracts|length }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('airlines.view_airline', id=airline.id) }}" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if current_user.is_admin() %}
+                                                <a href="{{ url_for('airlines.edit_airline', id=airline.id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form action="{{ url_for('airlines.delete_airline', id=airline.id) }}" method="POST" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-delete" data-bs-toggle="tooltip" title="Eliminar">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                                {% if airlines|length == 0 %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <p class="text-muted mb-0">No hay aerolíneas registradas.</p>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Confirmación para eliminar aerolínea
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!confirm('¿Está seguro de que desea eliminar esta aerolínea? Esta acción no se puede deshacer.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

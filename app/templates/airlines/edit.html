@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Aerolínea - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-edit me-2"></i>Editar Aerolínea
+                </h1>
+                <a href="{{ url_for('airlines.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Volver
+                </a>
+            </div>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('airlines.edit_airline', id=airline.id) }}" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Código de Aerolínea</label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{ airline.code }}" required maxlength="3">
+                            <div class="form-text">Código único para identificar la aerolínea (máximo 3 caracteres).</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ airline.name }}" required maxlength="100">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" rows="4">{{ airline.description or '' }}</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="logo" class="form-label">Logo</label>
+                            <input type="file" class="form-control image-input" id="logo" name="logo" data-preview="#logoPreview" accept="image/*">
+                            <div class="form-text">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 2MB. Deje en blanco para mantener el logo actual.</div>
+                            <div class="mt-2">
+                                {% if airline.logo_path %}
+                                <img id="logoPreview" src="{{ url_for('static', filename=airline.logo_path) }}" alt="{{ airline.name }}" class="img-thumbnail" style="max-height: 100px;">
+                                {% else %}
+                                <img id="logoPreview" src="#" alt="Vista previa del logo" class="img-thumbnail" style="max-height: 100px; display: none;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

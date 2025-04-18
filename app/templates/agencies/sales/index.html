@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Ventas - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-cash-register me-2"></i>Gestión de Ventas
+                </h1>
+                <a href="{{ url_for('agencies.new_sale') }}" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i>Nueva Venta
+                </a>
+            </div>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('agencies.sales') }}" class="row g-3">
+                        <div class="col-md-3">
+                            <label for="start_date" class="form-label">Fecha Inicio</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.args.get('start_date', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end_date" class="form-label">Fecha Fin</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.args.get('end_date', '') }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="airline_id" class="form-label">Aerolínea</label>
+                            <select class="form-select" id="airline_id" name="airline_id">
+                                <option value="">Todas las aerolíneas</option>
+                                {% for airline in airlines %}
+                                <option value="{{ airline.id }}" {% if request.args.get('airline_id')|int == airline.id %}selected{% endif %}>
+                                    {{ airline.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="fas fa-search me-1"></i>Filtrar
+                            </button>
+                            <a href="{{ url_for('agencies.sales') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-redo me-1"></i>Limpiar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Registro de Ventas</h5>
+                </div>
+                <div class="card-body">
+                    {% if sales %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha</th>
+                                        <th>Aerolínea</th>
+                                        <th>Cliente</th>
+                                        <th>Monto</th>
+                                        <th>Comisión</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sale in sales %}
+                                    <tr>
+                                        <td><strong>#{{ sale.id }}</strong></td>
+                                        <td>{{ sale.sale_date.strftime('%d/%m/%Y') }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                {% if sale.airline.logo_path %}
+                                                    <img src="{{ url_for('static', filename=sale.airline.logo_path) }}" alt="{{ sale.airline.name }}" class="me-2" style="max-height: 25px;">
+                                                {% else %}
+                                                    <i class="fas fa-plane me-2 text-primary"></i>
+                                                {% endif %}
+                                                {{ sale.airline.name }}
+                                            </div>
+                                        </td>
+                                        <td>{{ sale.client_name }}</td>
+                                        <td>{{ "%.2f"|format(sale.amount) }} USD</td>
+                                        <td>{{ "%.2f"|format(sale.commission) }} USD</td>
+                                        <td>
+                                            {% if sale.status == 'completed' %}
+                                                <span class="badge bg-success">Completada</span>
+                                            {% elif sale.status == 'pending' %}
+                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                            {% elif sale.status == 'cancelled' %}
+                                                <span class="badge bg-danger">Cancelada</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ sale.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ url_for('agencies.view_sale', id=sale.id) }}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ url_for('agencies.edit_sale', id=sale.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
+                            {% if request.args.get('start_date') or request.args.get('end_date') or request.args.get('airline_id') %}
+                                <p class="text-muted">No se encontraron ventas que coincidan con los criterios de búsqueda.</p>
+                                <a href="{{ url_for('agencies.sales') }}" class="btn btn-outline-primary mt-2">
+                                    <i class="fas fa-redo me-1"></i>Limpiar filtros
+                                </a>
+                            {% else %}
+                                <p class="text-muted">No hay ventas registradas en el sistema.</p>
+                                <a href="{{ url_for('agencies.new_sale') }}" class="btn btn-primary mt-2">
+                                    <i class="fas fa-plus me-1"></i>Registrar primera venta
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-light border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total de Ventas</h5>
+                    <h2 class="text-primary">
+                        {% if total_sales %}
+                            {{ "%.2f"|format(total_sales) }} USD
+                        {% else %}
+                            0.00 USD
+                        {% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total de Comisiones</h5>
+                    <h2 class="text-success">
+                        {% if total_commissions %}
+                            {{ "%.2f"|format(total_commissions) }} USD
+                        {% else %}
+                            0.00 USD
+                        {% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Número de Ventas</h5>
+                    <h2 class="text-info">
+                        {% if sales %}
+                            {{ sales|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

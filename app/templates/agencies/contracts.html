@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Búsqueda de Contratos - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-file-contract me-2"></i>Búsqueda de Contratos
+            </h1>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('agencies.contracts') }}" class="row g-3">
+                        <div class="col-md-5">
+                            <label for="airline_id" class="form-label">Aerolínea</label>
+                            <select class="form-select" id="airline_id" name="airline_id">
+                                <option value="">Todas las aerolíneas</option>
+                                {% for airline in airlines %}
+                                <option value="{{ airline.id }}" {% if selected_airline == airline.id %}selected{% endif %}>
+                                    {{ airline.name }} ({{ airline.code }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="keyword" class="form-label">Palabra clave</label>
+                            <input type="text" class="form-control" id="keyword" name="keyword" value="{{ keyword or '' }}" placeholder="Buscar en título o descripción...">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-1"></i>Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Resultados de la búsqueda</h5>
+                </div>
+                <div class="card-body">
+                    {% if contracts %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Aerolínea</th>
+                                        <th>Título</th>
+                                        <th>Vigencia</th>
+                                        <th>Documentos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contract in contracts %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                {% if contract.airline.logo_path %}
+                                                    <img src="{{ url_for('static', filename=contract.airline.logo_path) }}" alt="{{ contract.airline.name }}" class="me-2" style="max-height: 30px;">
+                                                {% else %}
+                                                    <i class="fas fa-plane me-2 text-primary"></i>
+                                                {% endif %}
+                                                {{ contract.airline.name }}
+                                            </div>
+                                        </td>
+                                        <td>{{ contract.title }}</td>
+                                        <td>
+                                            <small class="text-muted">
+                                                {{ contract.start_date.strftime('%d/%m/%Y') }} - {{ contract.end_date.strftime('%d/%m/%Y') }}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">{{ contract.documents|length }}</span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ url_for('agencies.view_contract', id=contract.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye me-1"></i>Ver detalles
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            {% if keyword or selected_airline %}
+                                <p class="text-muted">No se encontraron contratos que coincidan con los criterios de búsqueda.</p>
+                                <a href="{{ url_for('agencies.contracts') }}" class="btn btn-outline-primary mt-2">
+                                    <i class="fas fa-redo me-1"></i>Limpiar filtros
+                                </a>
+                            {% else %}
+                                <p class="text-muted">No hay contratos disponibles en el sistema.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

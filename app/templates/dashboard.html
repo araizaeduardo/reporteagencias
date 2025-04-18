@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+            </h1>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Tarjeta de bienvenida -->
+        <div class="col-md-12 mb-4">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Bienvenido, {{ current_user.username }}</h5>
+                    <p class="card-text">
+                        {% if current_user.agency %}
+                            Estás conectado como agente de <strong>{{ current_user.agency.name }}</strong> ({{ current_user.agency.code }}).
+                        {% elif current_user.is_admin() %}
+                            Estás conectado como administrador del sistema.
+                        {% else %}
+                            Estás conectado como usuario sin agencia asignada.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% if current_user.is_admin() %}
+            <!-- Accesos rápidos para administradores -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Usuarios</h5>
+                        <p class="card-text">Administrar usuarios del sistema.</p>
+                        <a href="{{ url_for('admin.users') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-1"></i>Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Agencias</h5>
+                        <p class="card-text">Administrar agencias de viajes.</p>
+                        <a href="{{ url_for('admin.agencies') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-1"></i>Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-plane fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Aerolíneas</h5>
+                        <p class="card-text">Administrar aerolíneas y contratos.</p>
+                        <a href="{{ url_for('airlines.index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-1"></i>Gestionar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if current_user.agency_id %}
+            <!-- Accesos rápidos para agentes -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-contract fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Contratos</h5>
+                        <p class="card-text">Buscar y consultar contratos de aerolíneas.</p>
+                        <a href="{{ url_for('agencies.contracts') }}" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>Buscar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-cash-register fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Ventas</h5>
+                        <p class="card-text">Registrar y gestionar ventas de boletos.</p>
+                        <a href="{{ url_for('agencies.sales') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Nueva Venta
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Reportes</h5>
+                        <p class="card-text">Generar reportes de ventas y comisiones.</p>
+                        <a href="{{ url_for('agencies.reports') }}" class="btn btn-primary">
+                            <i class="fas fa-chart-line me-1"></i>Ver Reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

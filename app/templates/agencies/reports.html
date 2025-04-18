@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-chart-bar me-2"></i>Reportes
+            </h1>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle fa-2x me-3"></i>
+                    <div>
+                        <h5 class="mb-1">Módulo de Reportes</h5>
+                        <p class="mb-0">Esta sección permitirá generar reportes de ventas y comisiones. Actualmente se encuentra en desarrollo y estará disponible en futuras actualizaciones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card report-card shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Reporte Mensual</h5>
+                    <p class="card-text">Resumen de ventas y comisiones del mes actual.</p>
+                    <button type="button" class="btn btn-primary" disabled>
+                        <i class="fas fa-file-download me-1"></i>Generar
+                    </button>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">Próximamente disponible</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card report-card shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-plane fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Reporte por Aerolínea</h5>
+                    <p class="card-text">Desglose de ventas por aerolínea y rutas.</p>
+                    <button type="button" class="btn btn-primary" disabled>
+                        <i class="fas fa-file-download me-1"></i>Generar
+                    </button>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">Próximamente disponible</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card report-card shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-tie fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Reporte por Agente</h5>
+                    <p class="card-text">Rendimiento y comisiones por agente de ventas.</p>
+                    <button type="button" class="btn btn-primary" disabled>
+                        <i class="fas fa-file-download me-1"></i>Generar
+                    </button>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">Próximamente disponible</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Vista Previa de Gráficos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">Visualización de datos</h5>
+                            <p class="text-muted">Los gráficos y visualizaciones estarán disponibles cuando se integre la funcionalidad de reportes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

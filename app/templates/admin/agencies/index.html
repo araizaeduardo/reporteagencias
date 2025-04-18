@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Administración de Agencias - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-building me-2"></i>Administración de Agencias
+                </h1>
+                <a href="{{ url_for('admin.new_agency') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i>Nueva Agencia
+                </a>
+            </div>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" id="table-filter" data-table="#agenciesTable" placeholder="Buscar agencia...">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="agenciesTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Agentes</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for agency in agencies %}
+                                <tr>
+                                    <td>{{ agency.id }}</td>
+                                    <td><strong>{{ agency.code }}</strong></td>
+                                    <td>{{ agency.name }}</td>
+                                    <td>{{ agency.email or 'No disponible' }}</td>
+                                    <td>{{ agency.phone or 'No disponible' }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ agency.agents|length }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('agencies.view_agency', id=agency.id) }}" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin.edit_agency', id=agency.id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ url_for('admin.delete_agency', id=agency.id) }}" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger btn-delete" data-bs-toggle="tooltip" title="Eliminar">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                                {% if agencies|length == 0 %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <p class="text-muted mb-0">No hay agencias registradas.</p>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Confirmación para eliminar agencia
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!confirm('¿Está seguro de que desea eliminar esta agencia? Esta acción no se puede deshacer.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

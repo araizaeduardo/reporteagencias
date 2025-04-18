@@ -1,0 +1,136 @@
+/* Estilos personalizados para el Sistema de Agencias de Viajes */
+
+/* Ajustes generales */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Estilos para tarjetas */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la barra de navegación */
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Estilos para tablas */
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Estilos para botones de acción en tablas */
+.btn-action {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+/* Estilos para logos de aerolíneas */
+.airline-logo {
+    max-height: 50px;
+    max-width: 100px;
+    object-fit: contain;
+}
+
+/* Estilos para la página de inicio */
+.hero-section {
+    padding: 5rem 0;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Estilos para el dashboard */
+.dashboard-card {
+    height: 100%;
+    border-radius: 0.5rem;
+}
+
+.dashboard-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #0d6efd;
+}
+
+/* Estilos para formularios */
+.form-label {
+    font-weight: 500;
+}
+
+/* Estilos para paginación */
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: 0.5rem;
+}
+
+/* Estilos para badges */
+.badge {
+    font-weight: 500;
+}
+
+/* Estilos para el pie de página */
+footer {
+    margin-top: auto;
+    padding: 1.5rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Estilos para vista de detalles */
+.detail-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Estilos para documentos */
+.document-card {
+    margin-bottom: 1rem;
+}
+
+.document-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: #0d6efd;
+}
+
+/* Estilos para reportes */
+.report-card {
+    margin-bottom: 1.5rem;
+}
+
+.chart-container {
+    height: 300px;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 767.98px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+}

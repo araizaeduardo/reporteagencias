@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Venta - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="fas fa-edit me-2"></i>Editar Venta #{{ sale.id }}
+                </h1>
+                <a href="{{ url_for('agencies.sales') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Volver
+                </a>
+            </div>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Formulario de Venta</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('agencies.edit_sale', id=sale.id) }}">
+                        {{ form.csrf_token }}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="client_name" class="form-label">Nombre del Cliente <span class="text-danger">*</span></label>
+                                    {{ form.client_name(class="form-control", placeholder="Ingrese el nombre completo del cliente") }}
+                                    {% if form.client_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.client_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="client_email" class="form-label">Email del Cliente <span class="text-danger">*</span></label>
+                                    {{ form.client_email(class="form-control", placeholder="Ingrese el email del cliente") }}
+                                    {% if form.client_email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.client_email.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="airline_id" class="form-label">Aerolínea <span class="text-danger">*</span></label>
+                                    {{ form.airline_id(class="form-select") }}
+                                    {% if form.airline_id.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.airline_id.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sale_date" class="form-label">Fecha de Venta <span class="text-danger">*</span></label>
+                                    {{ form.sale_date(class="form-control", type="date") }}
+                                    {% if form.sale_date.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.sale_date.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ticket_number" class="form-label">Número de Boleto</label>
+                                    {{ form.ticket_number(class="form-control", placeholder="Ingrese el número de boleto") }}
+                                    {% if form.ticket_number.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.ticket_number.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="amount" class="form-label">Monto (USD) <span class="text-danger">*</span></label>
+                                    {{ form.amount(class="form-control", placeholder="0.00") }}
+                                    {% if form.amount.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.amount.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="commission" class="form-label">Comisión (USD) <span class="text-danger">*</span></label>
+                                    {{ form.commission(class="form-control", placeholder="0.00") }}
+                                    {% if form.commission.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.commission.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="origin" class="form-label">Origen <span class="text-danger">*</span></label>
+                                    {{ form.origin(class="form-control", placeholder="Ciudad de origen") }}
+                                    {% if form.origin.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.origin.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="destination" class="form-label">Destino <span class="text-danger">*</span></label>
+                                    {{ form.destination(class="form-control", placeholder="Ciudad de destino") }}
+                                    {% if form.destination.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.destination.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="notes" class="form-label">Notas</label>
+                                    {{ form.notes(class="form-control", rows=3, placeholder="Información adicional sobre la venta") }}
+                                    {% if form.notes.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.notes.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="status" class="form-label">Estado <span class="text-danger">*</span></label>
+                                    {{ form.status(class="form-select") }}
+                                    {% if form.status.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.status.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="payment_method" class="form-label">Método de Pago <span class="text-danger">*</span></label>
+                                    {{ form.payment_method(class="form-select") }}
+                                    {% if form.payment_method.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.payment_method.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Guardar Cambios
+                            </button>
+                            <a href="{{ url_for('agencies.sales') }}" class="btn btn-secondary ms-2">
+                                <i class="fas fa-times me-1"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-calculate commission based on amount
+        const amountInput = document.getElementById('amount');
+        const commissionInput = document.getElementById('commission');
+        
+        if (amountInput && commissionInput) {
+            amountInput.addEventListener('input', function() {
+                const amount = parseFloat(this.value) || 0;
+                // Default commission rate of 10%
+                const commission = amount * 0.10;
+                commissionInput.value = commission.toFixed(2);
+            });
+        }
+    });
+</script>
+{% endblock %}

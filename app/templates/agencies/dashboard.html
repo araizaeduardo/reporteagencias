@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard de Agencia - {{ agency.name }} - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-building me-2"></i>{{ agency.name }}
+            </h1>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-title">Información de la Agencia</h5>
+                            <p class="mb-1"><strong>Código:</strong> {{ agency.code }}</p>
+                            <p class="mb-1"><strong>Dirección:</strong> {{ agency.address or 'No disponible' }}</p>
+                            <p class="mb-1"><strong>Teléfono:</strong> {{ agency.phone or 'No disponible' }}</p>
+                            <p class="mb-1"><strong>Email:</strong> {{ agency.email or 'No disponible' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-title">Agentes</h5>
+                            {% if agency.agents %}
+                                <ul class="list-group">
+                                    {% for agent in agency.agents %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ agent.username }}
+                                        <span class="badge bg-primary rounded-pill">{{ agent.email }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No hay agentes asignados a esta agencia.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-contract fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Contratos</h5>
+                    <p class="card-text">Buscar y consultar contratos de aerolíneas.</p>
+                    <a href="{{ url_for('agencies.contracts') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i>Buscar
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-cash-register fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Ventas</h5>
+                    <p class="card-text">Registrar y gestionar ventas de boletos.</p>
+                    <a href="{{ url_for('agencies.sales') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Nueva Venta
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Reportes</h5>
+                    <p class="card-text">Generar reportes de ventas y comisiones.</p>
+                    <a href="{{ url_for('agencies.reports') }}" class="btn btn-primary">
+                        <i class="fas fa-chart-line me-1"></i>Ver Reportes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Actividad Reciente</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted text-center py-4">
+                        <i class="fas fa-info-circle me-1"></i>
+                        La funcionalidad de actividad reciente estará disponible en futuras actualizaciones.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
