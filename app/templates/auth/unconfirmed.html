@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Confirma tu correo electrónico - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm mt-5">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0">Confirma tu correo electrónico</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="text-center mb-4">
+                        <i class="fas fa-envelope fa-4x text-warning mb-3"></i>
+                        <h5>¡Gracias por registrarte!</h5>
+                        <p>Hemos enviado un correo electrónico a <strong>{{ current_user.email }}</strong> con un enlace de confirmación.</p>
+                        <p>Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p><i class="fas fa-info-circle me-2"></i>Si no has recibido el correo electrónico, revisa tu carpeta de spam o haz clic en el botón de abajo para enviar un nuevo correo de confirmación.</p>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('auth.resend_confirmation') }}" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Reenviar correo de confirmación
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Registro de Agente - Sistema de Agencias de Viajes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Registro de Agente</h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST" action="{{ url_for('auth.register') }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de usuario</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="form-text">Recibirás un correo de confirmación en esta dirección.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="agency_id" class="form-label">Agencia</label>
+                            <select class="form-select" id="agency_id" name="agency_id" required>
+                                <option value="">Selecciona una agencia</option>
+                                {% for agency in agencies %}
+                                <option value="{{ agency.id }}">{{ agency.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validar que las contraseñas coincidan
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Las contraseñas no coinciden');
+            }
+        });
+    });
+</script>
+{% endblock %}

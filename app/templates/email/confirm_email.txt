@@ -1,0 +1,16 @@
+Hola {{ user.username }},
+
+Gracias por registrarte en nuestro Sistema de Agencias de Viajes. Para completar tu registro y activar tu cuenta, por favor visita el siguiente enlace:
+
+{{ url }}
+
+Este enlace expirará en 24 horas.
+
+Si no has solicitado esta cuenta, puedes ignorar este correo electrónico.
+
+Saludos,
+El equipo de Sistema de Agencias de Viajes
+
+---
+Este es un correo electrónico automático, por favor no respondas a este mensaje.
+© {{ year }} Sistema de Agencias de Viajes. Todos los derechos reservados.

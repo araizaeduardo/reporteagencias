@@ -25,6 +25,15 @@ var/
 .installed.cfg
 *.egg
 
+# Archivos de prueba
+test_*.py
+*_test.py
+tests/
+activate_admin.py
+mock_*.py
+fixtures/
+.pytest_cache/
+
 # Entorno virtual
 venv/
 ENV/
@@ -39,6 +48,7 @@ env/
 # Archivos de logs
 logs/
 *.log
+app/static/logs/
 
 # Archivos de uploads
 app/static/uploads/

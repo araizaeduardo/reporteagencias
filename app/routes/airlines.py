@@ -16,6 +16,11 @@ def save_file(file, folder='uploads'):
         # Generar nombre único para evitar colisiones
         unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
         
+        # Importante: Evitar la duplicación de 'uploads' en la ruta
+        # Si folder ya comienza con 'uploads/', eliminarlo para evitar rutas como 'uploads/uploads/'
+        if folder.startswith('uploads/'):
+            folder = folder[8:]  # Eliminar 'uploads/' del inicio
+        
         # Crear ruta para guardar el archivo físicamente
         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], folder, unique_filename)
         
@@ -58,7 +63,11 @@ def new_airline():
         # Guardar logo si se proporciona
         logo_path = None
         if logo and logo.filename:
+            # Asegurarse de que la ruta comienza con 'uploads/'
             logo_path = save_file(logo, 'uploads/airlines')
+            # Verificar que la ruta comienza con 'uploads/'
+            if not logo_path.startswith('uploads/'):
+                logo_path = f"uploads/{logo_path}"
         
         # Crear nueva aerolínea
         new_airline = Airline(
@@ -105,7 +114,12 @@ def edit_airline(id):
         
         # Actualizar logo si se proporciona uno nuevo
         if logo and logo.filename:
-            airline.logo_path = save_file(logo, 'uploads/airlines')
+            # Asegurarse de que la ruta comienza con 'uploads/'
+            logo_path = save_file(logo, 'uploads/airlines')
+            # Verificar que la ruta comienza con 'uploads/'
+            if not logo_path.startswith('uploads/'):
+                logo_path = f"uploads/{logo_path}"
+            airline.logo_path = logo_path
         
         db.session.commit()
         
@@ -165,7 +179,11 @@ def new_contract(airline_id):
         # Guardar archivo del contrato si se proporciona
         file_path = None
         if contract_file and contract_file.filename:
+            # Asegurarse de que la ruta comienza con 'uploads/'
             file_path = save_file(contract_file, 'uploads/contracts')
+            # Verificar que la ruta comienza con 'uploads/'
+            if not file_path.startswith('uploads/'):
+                file_path = f"uploads/{file_path}"
         
         # Crear nuevo contrato
         new_contract = Contract(
@@ -211,7 +229,12 @@ def edit_contract(id):
         
         # Actualizar archivo del contrato si se proporciona uno nuevo
         if contract_file and contract_file.filename:
-            contract.file_path = save_file(contract_file, 'uploads/contracts')
+            # Asegurarse de que la ruta comienza con 'uploads/'
+            file_path = save_file(contract_file, 'uploads/contracts')
+            # Verificar que la ruta comienza con 'uploads/'
+            if not file_path.startswith('uploads/'):
+                file_path = f"uploads/{file_path}"
+            contract.file_path = file_path
         
         db.session.commit()
         
@@ -269,6 +292,9 @@ def new_document(contract_id):
         
         # Guardar archivo del documento
         file_path = save_file(document_file, 'uploads/documents')
+        # Verificar que la ruta comienza con 'uploads/'
+        if not file_path.startswith('uploads/'):
+            file_path = f"uploads/{file_path}"
         
         # Crear nuevo documento
         new_document = ContractDocument(

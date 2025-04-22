@@ -2,12 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_mail import Mail
 import os
 
 # Inicializar extensiones
 db = SQLAlchemy()
 login_manager = LoginManager()
 migrate = Migrate()
+mail = Mail()
 
 def create_app():
     app = Flask(__name__)
@@ -25,10 +27,25 @@ def create_app():
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     
+    # Configuración de Flask-Mail
+    app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
+    app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+    app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', 'true').lower() in ['true', 'on', '1']
+    app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', 'Sistema de Agencias <no-reply@paseotravel.com>')
+    
+    # Verificar que las credenciales de correo estén configuradas
+    if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
+        print("ADVERTENCIA: Las credenciales de correo electrónico no están configuradas.")
+        print("Por favor, configure las variables de entorno MAIL_USERNAME y MAIL_PASSWORD.")
+        print("La funcionalidad de envío de correos no estará disponible.")
+    
     # Inicializar extensiones con la aplicación
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    mail.init_app(app)
     
     # Configurar login_manager
     login_manager.login_view = 'auth.login'
